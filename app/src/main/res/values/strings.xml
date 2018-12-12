@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Boleias</string>
+    <string name="username">Nome de usuario</string>
+    <string name="password">Palavra Secreta</string>
+    <string name="login">Entrar</string>
+    <string name="passwordForgot">Esqueceu-se da palavra secreta ?</string>
+    <string name="signIn">Registe-se!</string>
+    <string name="newAccount">Nao possui conta ainda?</string>
+    <string name="email">Email</string>
+    <string name="confirmPass">Confirme a palavra secreta</string>
+    <string name="registar">Registar</string>
 </resources>

@@ -1,3 +1,4 @@
+
 package pt.estig.ipbeja.boleias;
 
 import android.support.v7.app.AppCompatActivity;
