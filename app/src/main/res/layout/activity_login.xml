@@ -25,7 +25,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.182" />
+        app:layout_constraintVertical_bias="0.182"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -47,7 +48,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextLogin"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -73,7 +75,7 @@
     <TextView
         android:id="@+id/txtNewAccount"
         android:layout_width="wrap_content"
-        android:layout_height="14dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -112,7 +114,7 @@
     <TextView
         android:id="@+id/txtSignIn"
         android:layout_width="wrap_content"
-        android:layout_height="15dp"
+        android:layout_height="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="92dp"
         android:layout_marginRight="92dp"
@@ -141,5 +143,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:contentDescription="logo" />
 </android.support.constraint.ConstraintLayout>
