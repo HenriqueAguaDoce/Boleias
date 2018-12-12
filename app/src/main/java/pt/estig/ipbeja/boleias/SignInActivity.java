@@ -46,8 +46,8 @@ public class SignInActivity extends AppCompatActivity {
 
     public void finishRegister(View view) {
         //TODO sign in form validation
-        EditText emailEditText = view.findViewById(R.id.editTextSignInEmail);
-        EditText passwordEditText = view.findViewById(R.id.editTextSignInPass);
+        EditText emailEditText = findViewById(R.id.editTextSignInEmail);
+        EditText passwordEditText = findViewById(R.id.editTextSignInPass);
         String email = emailEditText.getText().toString();
         String password =  passwordEditText.getText().toString();
 
