@@ -16,11 +16,16 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        emailEditText = findViewById(R.id.editTextLoginEmail);
+        passwordEditText = findViewById(R.id.editTextLoginPassword);
 
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
@@ -49,8 +54,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view){
         //TODO login form validation
-        EditText emailEditText = view.findViewById(R.id.editTextLoginEmail);
-        EditText passwordEditText = view.findViewById(R.id.editTextLoginPassword);
         String email = emailEditText.getText().toString();
         String password =  passwordEditText.getText().toString();
 
