@@ -1,4 +1,4 @@
-package pt.estig.ipbeja.boleias.data;
+package pt.estig.ipbeja.boleias.data.dao;
 
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
