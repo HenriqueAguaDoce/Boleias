@@ -16,8 +16,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import pt.estig.ipbeja.boleias.data.BoleiasDatabase;
 import pt.estig.ipbeja.boleias.data.User;
 
 public class SignInActivity extends AppCompatActivity {

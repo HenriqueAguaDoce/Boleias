@@ -1,6 +1,5 @@
 package pt.estig.ipbeja.boleias;
 
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -16,8 +15,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.List;
-
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText emailEditText;
@@ -26,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_login);
 
         this.emailEditText = findViewById(R.id.editTextLoginEmail);
@@ -38,19 +36,6 @@ public class LoginActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
-        //Observe database DAO with Livedata?
-        /* NoteDatabase.getInstance(getApplicationContext())
-                .noteDao()
-                .getNotes()
-                .observe(this, new Observer<List<Note>>() {
-                    @Override
-                    public void onChanged(@android.support.annotation.Nullable List<Note> notes) {
-                        adapter.setData(notes);
-                    }
-                });
-         */
-
 
         //Login essentials with firebase
         mAuth = FirebaseAuth.getInstance();
@@ -65,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
             //TODO pass user info?
             MainActivity.start(this);
         }
-        //updateUI(currentUser);
     }
 
     public static void start(Context context) {
