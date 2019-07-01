@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Boleias</string>
-    <string name="username">Nome de usuario</string>
+    <string name="username">Email do usuario</string>
     <string name="password">Palavra Secreta</string>
     <string name="login">Entrar</string>
     <string name="passwordForgot">Esqueceu-se da palavra secreta ?</string>
@@ -9,4 +9,17 @@
     <string name="email">Email</string>
     <string name="confirmPass">Confirme a palavra secreta</string>
     <string name="registar">Registar</string>
+    <string name="findride">Procurar Boleia</string>
+    <string name="offerride">Oferecer Boleia</string>
+    <string name="startRide">Local de partida:</string>
+    <string name="endRide">Local de chegada:</string>
+    <string name="search">Procurar Resultados</string>
+    <string name="seats">Lugares Disponiveis:</string>
+    <string name="seatsNumber">4</string>
+    <string name="startRideLocation">Start Location</string>
+    <string name="endRideLocation">End Location</string>
+    <string name="price">Preço:</string>
+    <string name="priceTag">20€</string>
+    <string name="timeOfTravel">22/02/2019 14:35</string>
+    <string name="stayLoggedIn">Conitnuar conectado ?</string>
 </resources>

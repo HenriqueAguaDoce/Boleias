@@ -6,6 +6,13 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Update;
 import java.util.List;
 
+
+/**
+ * @author henriquead
+ * Data Access Object
+ * Where we'll have all the CRUD options
+ */
+
 public interface BaseDao<T> {
 
     @Insert

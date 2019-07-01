@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 import java.util.List;
-import pt.estig.ipbeja.boleias.data.User;
+import pt.estig.ipbeja.boleias.data.entity.User;
 
 /**
  * The DAO for the User class, with query methods.

@@ -3,12 +3,13 @@ package pt.estig.ipbeja.boleias;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,27 +19,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Observe database DAO with Livedata?
-        /* NoteDatabase.getInstance(getApplicationContext())
-                .noteDao()
-                .getNotes()
-                .observe(this, new Observer<List<Note>>() {
-                    @Override
-                    public void onChanged(@android.support.annotation.Nullable List<Note> notes) {
-                        adapter.setData(notes);
-                    }
-                });
-         */
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.logOut:
+                Toast.makeText(this, "Loging out...", Toast.LENGTH_SHORT).show();
+
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                        .putBoolean("checkBoxKeepIn", false).commit();
+                finish();
+                LoginActivity.start(this);
+                return true;
+            default:
+                 return super.onOptionsItemSelected(item);
+
+        }
     }
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
-        //starter.putExtra();
         context.startActivity(starter);
     }
 
     public void signOut(View view){
         FirebaseAuth.getInstance().signOut();
         LoginActivity.start(this);
+    }
+
+    public void btn_findRide_onclick(View view) {
+        FindRide.start(this);
+
+
+    }
+
+    public void btn_offerRide_onclick(View view) {
+        OfferRide.start(this);
     }
 }

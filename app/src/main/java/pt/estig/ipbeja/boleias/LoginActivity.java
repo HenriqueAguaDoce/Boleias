@@ -2,11 +2,13 @@ package pt.estig.ipbeja.boleias;
 
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText emailEditText;
     private EditText passwordEditText;
+    private CheckBox checkBoxKeepIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
         this.emailEditText = findViewById(R.id.editTextLoginEmail);
         this.passwordEditText = findViewById(R.id.editTextLoginPassword);
+        this.checkBoxKeepIn = findViewById(R.id.checkBoxKeepIn);
 
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
@@ -37,6 +41,11 @@ public class LoginActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+
+        boolean checked = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("checkBoxKeepIn", false);
+        checkBoxKeepIn.setChecked(checked);
+
         //Login essentials with firebase
         mAuth = FirebaseAuth.getInstance();
     }
@@ -44,9 +53,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null){
+
+        if (checkBoxKeepIn.isChecked() & currentUser != null) {
             //TODO pass user info?
             MainActivity.start(this);
         }
@@ -60,11 +71,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void createNewAccount(View view) {
-        SignInActivity.start(this);
+        SignUpActivity.start(this);
     }
 
+
+
     public void login(View view){
-        //TODO login form validation
         String email = emailEditText.getText().toString();
         String password =  passwordEditText.getText().toString();
 
@@ -84,5 +96,15 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void checkBoxKeepIn_OnClick(View view) {
+
+        boolean checked = checkBoxKeepIn.isChecked();
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putBoolean("checkBoxKeepIn", checked).commit();
+        Toast.makeText(this, "Check: " + checked, Toast.LENGTH_SHORT).show();
+
     }
 }

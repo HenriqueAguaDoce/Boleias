@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "283162266027-h32n8e0ie66c1ubnqvr7ip8buprop8or.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pt.estig.ipbeja.boleias",
+            "certificate_hash": "cb7ebc18fc2e445bb58b7f7ccd6c88ea05e6d5b1"
+          }
+        },
+        {
           "client_id": "283162266027-0vobr3mhbr16tjinj3suafsttsr0elam.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -25,15 +33,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "283162266027-0vobr3mhbr16tjinj3suafsttsr0elam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

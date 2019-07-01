@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="city_array">
+        <item></item>
+        <item>Beja</item>
+        <item>Evora</item>
+        <item>Faro</item>
+        <item>Lisboa</item>
+        <item>Porto</item>
+        <item>Leiria</item>
+        <item>Santarem</item>
+        <item>Aveiro</item>
+        <item>Coimbra</item>
+        <item>Braga</item>
+        <item>Bragança</item>
+        <item>Chaves</item>
+        <item>Elvas</item>
+        <item>Espinho</item>
+        <item>Estremoz</item>
+        <item>Gondomar</item>
+        <item>Guarda</item>
+        <item>Lagos</item>
+    </string-array>
+</resources>

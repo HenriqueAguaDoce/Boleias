@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/border"
+    android:padding="8dp"
+    app:barrierAllowsGoneWidgets="false">
+
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/txtProfileName"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="TextView"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@+id/imgProfile"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/txtSeats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/seats"
+        app:layout_constraintStart_toEndOf="@+id/imgProfile"
+        app:layout_constraintTop_toBottomOf="@+id/txtProfileName" />
+
+    <TextView
+        android:id="@+id/txtSeatsnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/seatsNumber"
+        app:layout_constraintStart_toEndOf="@+id/txtSeats"
+        app:layout_constraintTop_toBottomOf="@+id/txtProfileName" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="379dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgStartLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        tools:srcCompat="@drawable/ic_my_location_black_24dp" />
+
+    <TextView
+        android:id="@+id/txtS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/startRide"
+        app:layout_constraintStart_toEndOf="@+id/imgStartLocation"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <ImageView
+        android:id="@+id/imgFinalLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgStartLocation"
+        app:srcCompat="@drawable/ic_location_city_black_24dp" />
+
+    <TextView
+        android:id="@+id/txtE"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/endRide"
+        app:layout_constraintStart_toEndOf="@+id/imgFinalLocation"
+        app:layout_constraintTop_toBottomOf="@+id/txtS" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="379dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgFinalLocation" />
+
+    <TextView
+        android:id="@+id/txtStartRideLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/startRideLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintStart_toEndOf="@+id/txtS"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <TextView
+        android:id="@+id/txtEndRideLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/endRideLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/txtE"
+        app:layout_constraintTop_toBottomOf="@+id/txtStartRideLocation" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/divider2"
+        app:layout_constraintStart_toEndOf="@+id/txtProfileName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/txtPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtPriceTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/priceTag"
+        app:layout_constraintBottom_toBottomOf="@+id/divider2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider4"
+        app:layout_constraintTop_toBottomOf="@+id/txtPrice" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider3"
+        app:srcCompat="@drawable/ic_access_time_black_24dp" />
+
+    <TextView
+        android:id="@+id/txtTimeOfTravel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/timeOfTravel"
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+</android.support.constraint.ConstraintLayout>

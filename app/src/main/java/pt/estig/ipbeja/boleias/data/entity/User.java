@@ -1,4 +1,4 @@
-package pt.estig.ipbeja.boleias.data;
+package pt.estig.ipbeja.boleias.data.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
@@ -11,15 +11,17 @@ public class User{
     private long id;
     private String name;
     private String email;
+    private byte[] photo;
 
     @Ignore
     public User(){
     }
 
-    public User (long id, String name, String email){
+    public User (long id, String name, String email, byte[] photo){
         this.id = id;
         this.name = name;
         this.email = email;
+        this.photo = photo;
     }
 
     public long getId() {
@@ -44,5 +46,13 @@ public class User{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 }
