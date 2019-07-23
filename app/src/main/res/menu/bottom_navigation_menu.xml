@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/profileSettings"
+        android:title="Profile"
+        android:icon="@drawable/ic_account_box_black_24dp" />
+    <item
+        android:id="@+id/findRide"
+        android:title="Boleias"
+        android:icon="@drawable/ic_directions_car_black_24dp" />
+    <item
+        android:id="@+id/createRide"
+        android:title="Criar Boleia"
+        android:icon="@drawable/ic_add_button" />
+    <item
+        android:id="@+id/messages"
+        android:title="Chat"
+        android:icon="@drawable/ic_message" />
+    <item
+        android:id="@+id/ridesHistory"
+        android:title="Histórico"
+        android:icon="@drawable/ic_history_black_24dp" />
+
+
+</menu>

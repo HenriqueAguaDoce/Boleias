@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="pt.estig.ipbeja.boleias">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,7 +27,8 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".FindRide" />
         <activity android:name=".OfferRide" />
-        <activity android:name=".RidesAvailableActivity"></activity>
+        <activity android:name=".RidesAvailableActivity" />
+        <activity android:name=".CreateCarActivity"></activity>
     </application>
 
 </manifest>

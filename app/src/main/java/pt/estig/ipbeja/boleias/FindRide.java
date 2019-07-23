@@ -3,8 +3,13 @@ package pt.estig.ipbeja.boleias;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +17,8 @@ import android.widget.CalendarView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class FindRide extends AppCompatActivity {
+public class FindRide extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+    private BottomNavigationView bottomNavigationView;
     private String txtStart, txtEnd, selectedDate;
     private Spinner spinnerStart, spinnerEnd;
     private CalendarView calendarView;
@@ -22,6 +28,10 @@ public class FindRide extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_ride);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setSelectedItemId(R.id.findRide);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         calendarView = (CalendarView) findViewById(R.id.calendarView);
 
@@ -72,6 +82,32 @@ public class FindRide extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.bottom_navigation_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.logOut:
+                Toast.makeText(this, "Loging out...", Toast.LENGTH_SHORT).show();
+
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                        .putBoolean("checkBoxKeepIn", false).commit();
+                finish();
+                LoginActivity.start(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     public static void start(Context context) {
         Intent starter = new Intent(context, FindRide.class);
         context.startActivity(starter);
@@ -84,4 +120,22 @@ public class FindRide extends AppCompatActivity {
         i.putExtra("date", selectedDate);
         startActivity(i);
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+
+            case R.id.createRide:
+                Toast.makeText(this, "Create Ride...", Toast.LENGTH_SHORT).show();
+                OfferRide.start(this);
+                return true;
+            case R.id.profileSettings:
+                Toast.makeText(this, "Profile Settings...", Toast.LENGTH_SHORT).show();
+                MainActivity.start(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
 }

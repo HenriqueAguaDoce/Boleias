@@ -25,7 +25,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
 
         emailEditText = findViewById(R.id.editTextSignInEmail);
         passwordEditText = findViewById(R.id.editTextSignInPass);
@@ -60,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(0, username.getText().toString(), email, null);
+                            User user = new User(0, username.getText().toString(), email,0, null, null, null, null);
                             FirebaseFirestore.getInstance()
                                     .collection("users")
                                     .add(user);
