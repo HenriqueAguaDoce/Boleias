@@ -3,8 +3,8 @@
   - [Link for firebase console](https://console.firebase.google.com/project/boleias-63ccc/overview)
 
 ## Demo user credentials
-  - Email: demo@demo.com
-  - Password: demodemo
+  - Email: henrique@gmail.com
+  - Password: qwerty
   
 # Things working
   - Register (Firebase)
