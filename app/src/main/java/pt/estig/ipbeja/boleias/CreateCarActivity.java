@@ -1,6 +1,7 @@
 package pt.estig.ipbeja.boleias;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -136,6 +137,7 @@ public class CreateCarActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @SuppressLint("WrongConstant")
     public void createCar(View view) {
         String brand = brandNameInput.getText().toString();
         String model = modelNameInput.getText().toString();
@@ -180,7 +182,8 @@ public class CreateCarActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if(requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             // Vamos buscar o thumbnail da foto
             Bitmap thumbnail = (Bitmap) extras.get("data");
@@ -188,7 +191,7 @@ public class CreateCarActivity extends AppCompatActivity {
             this.carPhoto.setImageBitmap(thumbnail);
             // E podemos guardar o Bitmap para o caso de a Activity ser destruida (ver onSaveInstanceState)
             this.carPhotoBitmap = thumbnail;
-        } else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        } else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
 
             Bitmap thumbnail = null;
             Uri uri = data.getData();
@@ -197,11 +200,11 @@ public class CreateCarActivity extends AppCompatActivity {
             this.carPhoto.setImageURI(uri);
 
             //Convert uri into bitmap
-            if (thumbnail == null){
+            if (thumbnail == null) {
                 try {
                     thumbnail = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     this.carPhotoBitmap = thumbnail;
-                    if (thumbnail != null){
+                    if (thumbnail != null) {
                         return;
                     }
                 } catch (IOException e) {
