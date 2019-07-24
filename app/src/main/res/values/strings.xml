@@ -41,4 +41,5 @@
     <string name="delete_car_dialog_title">Apagar veiculo</string>
     <string name="delete_car_dialog_message">Tem a certeza que deseja eliminar o \\\'%s\\\' da sua lista ??</string>
     <string name="delete_car_positive">Apagar</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

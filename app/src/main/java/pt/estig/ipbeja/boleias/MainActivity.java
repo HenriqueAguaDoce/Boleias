@@ -13,13 +13,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         userEmail = getIntent().getStringExtra(USER_EMAIL);
 
-        // Se a instance state não é null, terá alguma coisa lá guardada
+        // Se a instance state nao e null, tera alguma coisa la guardada
         if(savedInstanceState != null) {
-            // idêntico aos extras dos intents (de facto os Intents guardam um Bundle mas oferecem métodos de conveniência para acesso a estes campos)
+            // identico aos extras dos intents (de facto os Intents guardam um Bundle mas oferecem metodos de conveniencia para acesso a estes campos)
             this.userPhotoBitmap = savedInstanceState.getParcelable(PHOTO_BITMAP_KEY);
         }
 
@@ -342,13 +342,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        // Para verificar que de facto existe uma aplicação que dê conta do nosso pedido
+        // Para verificar que de facto existe uma aplicacao que de conta do nosso pedido
         if (intent.resolveActivity(getPackageManager()) != null) {
-            // Se sim, lançamos o Intent
+            // Se sim, lancamos o Intent
             startActivityForResult(intent, PHOTO_REQUEST_CODE);
         }
         else {
-            // Se não existir, podemos mostrar uma mensagem de erro ao utilizador
+            // Se nao existir, podemos mostrar uma mensagem de erro ao utilizador
             // TODO error
         }
     }
@@ -360,12 +360,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // também podiamos ir buscar o bitmap directamente à imageview:
+        // tambem podiamos ir buscar o bitmap directamente a imageview:
         // BitmapDrawable drawable = (BitmapDrawable) contactPhoto.getDrawable();
         // Bitmap bitmap = drawable.getBitmap();
         if(userPhotoBitmap != null) outState.putParcelable(PHOTO_BITMAP_KEY, userPhotoBitmap);
 
-        // No final, chamamos o super já com o bundle composto
+        // No final, chamamos o super ja com o bundle composto
         super.onSaveInstanceState(outState);
     }
 
@@ -378,7 +378,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             // Getting the thumbnail of the photo
             this.thumbnail = (Bitmap) extras.get("data");
@@ -393,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             BoleiasDatabase.getInstance(this).userDao().updatePhoto(photoBytes, user.getId());
             Toast.makeText(this, "photo uploaded", Toast.LENGTH_SHORT).show();
 
-        } else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        } else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Uri uri = data.getData();
 
             //Set image to image view
