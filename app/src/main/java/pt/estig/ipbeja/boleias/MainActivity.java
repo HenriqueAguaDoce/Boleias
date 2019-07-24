@@ -41,6 +41,15 @@ import pt.estig.ipbeja.boleias.data.db.BoleiasDatabase;
 import pt.estig.ipbeja.boleias.data.entity.User;
 import pt.estig.ipbeja.boleias.data.entity.Vehicle;
 
+
+/**
+ * @author henriquead
+ * Contem a actividade principal
+ * Onde o utilizador pode verificar as definicoes do seu perfil
+ * E possivel alterar as suas informacoes
+ * Criar novo veiculos para o seu perfil
+ */
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     //views
@@ -105,10 +114,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
-    /**/
+    /**
+     * Realiza uma pesquisa a base de dados e retorna todos os dados do utilizador
+     * Depois de receber os dados coloca-os no locais apropriados para o efeito
+     */
     private void getInfoFromUser(){
 
+        // receber a informacao disponivel do ut a partir da base de dados
         user = BoleiasDatabase.getInstance(this).userDao().getContact(userEmail);
+
+        // Adicionar a infomacao nos respectivos campos
         TextView nome = findViewById(R.id.txtNomeUt);
         nome.setText(user.getName());
 
@@ -144,6 +159,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return bitmap;
     }
 
+    /**
+     * Menu a aparecer aquando do incio da aplicacao
+     * @param menu recebe o menu passado como argumento
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -151,6 +170,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
+    /**
+     * Verifica qual a opcao selecionada pelo utilizador no menu
+     * @param item sera a escolha do utilizador de entre as opcoes do menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -170,12 +193,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    /**
+     * Inicia a activity com argumentos extra para identificarmos o utilizador logado no sistema
+     * @param context contexto
+     * @param userEmail email utilizado para realizar o login
+     */
     public static void start(Context context, String userEmail) {
         Intent starter = new Intent(context, MainActivity.class);
         starter.putExtra(USER_EMAIL, userEmail);
         context.startActivity(starter);
     }
 
+    /**
+     * Verifica se o utilizador ja escolheu alguma fotografia, se assim for, coloca-a la
+     * Apresenta tambem todos os veiculos associados ao utilizador no perfil
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -193,6 +225,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    /**
+     * Atualiza a recyclerview quando novos carros introduzidos
+     */
     @Override
     protected void onResume() {
 
@@ -203,6 +238,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onResume();
     }
 
+    /**
+     * Verifica qual a opcao selecionada pelo utilizador na barra de navegacao
+     * @param menuItem sera a escolha do utilizador de entre as opcoes da barra de navegacao
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
@@ -225,10 +264,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    /**
+     * Evento ao clicar na imagem
+     * @param view vista
+     */
     public void addNewProfImg_onClick(View view) {
         selectImage();
     }
 
+    /**
+     * Lanca um alert para que o utilizador escolha como pretende selecionar a sua fotografia
+     * Permite esolher tirar uma fotografia nova ou escolhar uma existende da galeria
+     */
     private void selectImage(){
         final String takePhoto = getString(R.string.takePhoto);
         final String selectPhoto = getString(R.string.selectPhoto);
@@ -257,6 +304,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    /**
+     * Lanca um intent para escolher uma fotografia atraves da galeria
+     * O resultado e posteriormente tratado no onActivityResult
+     */
     private void picImageFromGallery(){
         //Intent to pick image from gallary
         Intent i = new Intent(Intent.ACTION_PICK);
@@ -264,6 +315,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         startActivityForResult(i, IMAGE_PICK_CODE);
     }
 
+    /**
+     * Verifica se a aplicacao tem as devidas permissoes para aceder a galeria
+     * Quando fornecidas as permissoes, e chamada a funcao pinImageFromGallary que ira lancar o intent
+     */
     private void galleryIntent() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE )
@@ -279,6 +334,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    /**
+     * Intent para tirar uma nova fotografia com a camara fotografica
+     * O resultado e posteriormente tratado no onActivityResult
+     */
     private void photoIntent()
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -294,6 +353,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+
+    /**
+     * Verifica-se se existe alguma coisa para guardar
+     * @param outState Estado em que se encontra
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         // também podiamos ir buscar o bitmap directamente à imageview:
@@ -305,7 +369,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onSaveInstanceState(outState);
     }
 
-    //Handles the result of the photo taken and the image choosed from the gallery
+
+    /**
+     * Trata o resultado tanto do intent da fotografia como da galeria de fotos
+     * @param requestCode verifica o codigo fornecido(defenidos como variaveis globais)
+     * @param resultCode verifica se correu bem ou nao
+     * @param data data proveniente do intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -333,7 +403,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    // handle result of runtime permission
+    /**
+     * Trata do resultados das permissoes em runtime
+     * @param requestCode verifica o codigo fornecido(defenidos como variaveis globais)
+     * @param permissions Conjunto de permissoes
+     * @param grantResults resultados
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
@@ -363,6 +438,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return byteArray;
     }
 
+    /**
+     * Dialog para eliminar veiculo seleccionado
+     * @param vehicle veiculo seleccionado
+     */
     private void showDeleteContactDialog(final Vehicle vehicle) {
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -380,22 +459,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         dialog.show();
     }
 
+    /**
+     * Elimina o veiculo seleccionado
+     * @param vehicle veiculo seleccionado
+     */
     private void deleteCar(Vehicle vehicle) {
         BoleiasDatabase.getInstance(this).vehicleDao().delete(vehicle);
         carAdapter.remove(vehicle);
     }
 
+    /**
+     * Lanca a actividade CreateCarActivity para criar um novo veiculo
+     * E passado como argumento o id do utilizador, para que os veiculos fiquem assoviados a si
+     * @param view vista
+     */
     public void createCars(View view) {
         CreateCarActivity.start(this, user.getId());
     }
 
 
-    class CarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+    class CarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         Vehicle vehicle;
         final ImageView carImage;
         final TextView carName;
 
-
+        /**
+         * Coloca um listenner nos items, para que quando tocados possam realizar algo
+         * @param itemView item seleccionado
+         */
         public CarViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -405,6 +496,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         }
 
+        /**
+         * Atribuir informacao correcta a cada veiculo
+         * @param vehicle veiculo a ser processado
+         */
         private void bind(Vehicle vehicle) {
             this.vehicle = vehicle;
 
@@ -416,30 +511,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
 
+        /**
+         * Transforma a imagem de byte[] em bitmap
+         * @param photoBytes recebe os bytes da imagem
+         */
         private Bitmap bitmapFromBytes(byte[] photoBytes) {
             ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(photoBytes);
             Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);
             return bitmap;
         }
 
+        /**
+         * Um veiculo da lista quando seleccionado pode ser eliminado
+         * E lancado um dialog que pergunta se pretende ou nao eliminar o veiculo
+         * @param v vista
+         */
         @Override
         public void onClick(View v) {
             showDeleteContactDialog(vehicle);
-        }
-
-
-        @Override
-        public boolean onLongClick(View v) {
-            // um click longo, invocamos o método para apagar o contacto
-            return true; // devolvemos true se tratámos o evento
         }
     }
 
 
     class CarAdapter extends RecyclerView.Adapter<CarViewHolder>{
 
+        // Lista de veiculos
         private List<Vehicle> data = new ArrayList<>();
 
+        /**
+         * Adicionar informacao a lista de veiculos
+         * @param data veiculos
+         */
         private void setData(List<Vehicle> data) {
             this.data = data;
         }
@@ -447,21 +549,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         @NonNull
         @Override
         public CarViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            // inflate do layout dos veiculos
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.car_list, viewGroup, false);
             return new CarViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull CarViewHolder carViewHolder, int i) {
+
+            // A inforacao e atribuida a cada veiculo
             Vehicle vehicle = data.get(i);
             carViewHolder.bind(vehicle);
         }
 
+        /**
+         * @return o numero de items da lista
+         */
         @Override
         public int getItemCount() {
             return data.size();
         }
 
+        /**
+         * Remove um veiculo da lista
+         * @param vehicle veiculo a ser processado
+         */
         private void remove(Vehicle vehicle) {
             int index = data.indexOf(vehicle);
             if(index != -1) {
@@ -470,13 +582,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
 
-        private void removeAll() {
-            int count = data.size();
-            if(count > 0) {
-                data.clear();
-                notifyItemRangeRemoved(0, count);
-            }
-        }
     }
 
 }
