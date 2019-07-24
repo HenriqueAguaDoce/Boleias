@@ -18,8 +18,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import pt.estig.ipbeja.boleias.data.db.BoleiasDatabase;
 import pt.estig.ipbeja.boleias.data.entity.User;
 
+/**
+ * @author henriquead
+ * Contem a actividade Login
+ * Aqui o utilizar realiza o seu login, atraves dos dados escolhidos durante o registo
+ * Para a verificacao do utilizador e utilizada a firebase, como base de dados externa
+ * A firebase tambem facilita a autenticacao do utilizador
+ */
 public class SignUpActivity extends AppCompatActivity {
+
+    //firebase
     private FirebaseAuth mAuth;
+
+    //variaveis globais
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText username;
@@ -52,11 +63,15 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Verificar dados introduzidos pelo utilizador e depois de aceites
+     * os dados sao enviados para a firebase e para a base de dados local
+     * @param view vista
+     */
     public void finishRegister(View view) {
         final String email = emailEditText.getText().toString();
         String password =  passwordEditText.getText().toString();
 
-        // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -76,9 +91,12 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
-        // [END create_user_with_email]
     }
 
+    /**
+     * Faz o utilizador recuar para a actividade anterior(login)
+     * @param view vista
+     */
     public void goBack(View view) {
         finish();
     }

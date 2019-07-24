@@ -20,8 +20,19 @@ import com.google.firebase.auth.FirebaseUser;
 import pt.estig.ipbeja.boleias.data.db.BoleiasDatabase;
 import pt.estig.ipbeja.boleias.data.entity.User;
 
+/**
+ * @author henriquead
+ * Contem a actividade Login
+ * Aqui o utilizar realiza o seu login, atraves dos dados escolhidos durante o registo
+ * Para a verificacao do utilizador e utilizada a firebase, como base de dados externa
+ * A firebase tambem facilita a autenticacao do utilizador
+ */
 public class LoginActivity extends AppCompatActivity {
+
+    // Bd externa
     private FirebaseAuth mAuth;
+
+    //Variaveis globais
     private EditText emailEditText;
     private EditText passwordEditText;
     private CheckBox checkBoxKeepIn;
@@ -45,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
         actionBar.hide();
 
 
+        // Checkbox para verificar se o utilizador deseija continuar conectado
+        // sem necessitar de estar sempre a recolocar os seus dados quando inicia
+        // a aplicacao de novo
         boolean checked = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("checkBoxKeepIn", false);
         checkBoxKeepIn.setChecked(checked);
@@ -77,8 +91,11 @@ public class LoginActivity extends AppCompatActivity {
         SignUpActivity.start(this);
     }
 
-
-
+    /**
+     * Verificar dados introduzidos pelo utilizador e validar com a firebase
+     * Caso os dados estejam correctos o utilizador entra no sistema
+     * @param view vista
+     */
     public void login(View view){
         final String email = emailEditText.getText().toString();
         String password =  passwordEditText.getText().toString();
@@ -99,6 +116,11 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Verificar se o utilizador deseja ou nao continuar logado no sistema
+     * Eliminado a necessidade de colacar os seus dados sempre que pretende entrar no sistema
+     * @param view vista
+     */
     public void checkBoxKeepIn_OnClick(View view) {
 
         boolean checked = checkBoxKeepIn.isChecked();
