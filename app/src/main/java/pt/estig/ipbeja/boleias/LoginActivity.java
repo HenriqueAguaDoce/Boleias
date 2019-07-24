@@ -17,6 +17,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import pt.estig.ipbeja.boleias.data.db.BoleiasDatabase;
+import pt.estig.ipbeja.boleias.data.entity.User;
+
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText emailEditText;
@@ -58,14 +61,14 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (checkBoxKeepIn.isChecked() & currentUser != null) {
-            //TODO pass user info?
-            MainActivity.start(this);
+            final String email = emailEditText.getText().toString();
+            User u =  BoleiasDatabase.getInstance(LoginActivity.this).userDao().getContact(email);
+            MainActivity.start(this, u.getEmail());
         }
     }
 
     public static void start(Context context) {
         Intent starter = new Intent(context, LoginActivity.class);
-        //starter.putExtra();
         context.startActivity(starter);
     }
 
@@ -77,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void login(View view){
-        String email = emailEditText.getText().toString();
+        final String email = emailEditText.getText().toString();
         String password =  passwordEditText.getText().toString();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -85,10 +88,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            // TODO send user info to main activity
                             FirebaseUser user = mAuth.getCurrentUser();
-                            MainActivity.start(LoginActivity.this);
+                            MainActivity.start(LoginActivity.this, email);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(LoginActivity.this, "Authentication failed.",

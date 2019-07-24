@@ -1,5 +1,6 @@
 package pt.estig.ipbeja.boleias.data.entity;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -9,12 +10,15 @@ public class User{
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+
     private String name;
     private String email;
     private int age;
     private String gender;
     private String userName;
     private String desciption;
+
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] photo;
 
     @Ignore

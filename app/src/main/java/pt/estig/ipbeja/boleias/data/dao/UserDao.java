@@ -1,32 +1,36 @@
 package pt.estig.ipbeja.boleias.data.dao;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+
 import java.util.List;
+
 import pt.estig.ipbeja.boleias.data.entity.User;
 
-/**
- * The DAO for the User class, with query methods.
- * Implements the BaseDAO.
- * @see pt.estig.ipbeja.boleias.data.dao.BaseDao
- */
 @Dao
-public abstract class UserDao implements BaseDao<User> {
+public interface UserDao {
 
-    /**
-     * Query that searches the 'users' collection in the database
-     * @return returns a LIveData list of all the Users
-     */
-    @Query("SELECT * FROM users")
-    public abstract LiveData<List<User>> getUsers();
+    @Insert
+    long insert(User user);
 
-    /**
-     * Query of the 'users' collection in the database
-     * @param id ID of the user to select
-     * @return returns a selected user
-     */
-    @Query("SELECT * FROM users WHERE id=:id")
-    public abstract LiveData<User> getUser(long id);
+    @Query("select * from users")
+    List<User> getAllUsers();
+
+    @Delete
+    int delete(User user);
+
+    @Query("delete from users")
+    int deleteAll();
+
+    @Query(("select * from users where email = :userEmail"))
+    User getContact(String userEmail);
+
+    @Query(("select * from users where id = :userId"))
+    User getContactFromId(long userId);
+
+    @Query(("UPDATE users SET photo=:photo WHERE id = :userId"))
+    void updatePhoto(byte[] photo, long userId);
 
 }

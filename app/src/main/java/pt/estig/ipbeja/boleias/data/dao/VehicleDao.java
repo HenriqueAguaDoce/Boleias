@@ -24,5 +24,5 @@ public interface VehicleDao {
     int deleteAll();
 
     @Query(("select * from vehicles where id = :vehicleId"))
-    Vehicle getVehicle(long vehicleId);
+    List<Vehicle> getVehicle(long vehicleId);
 }

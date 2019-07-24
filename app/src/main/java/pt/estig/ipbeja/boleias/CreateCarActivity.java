@@ -1,12 +1,19 @@
 package pt.estig.ipbeja.boleias;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,14 +22,22 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import pt.estig.ipbeja.boleias.data.db.BoleiasDatabase;
+import pt.estig.ipbeja.boleias.data.entity.User;
 import pt.estig.ipbeja.boleias.data.entity.Vehicle;
 
 public class CreateCarActivity extends AppCompatActivity {
 
+    public static final String USER_ID = "userId";
+
+    private long userId;
+
     // Activity request codes
     private static final int PHOTO_REQUEST_CODE = 123;
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
 
     // Instance State Bundle keys
     private static final String PHOTO_BITMAP_KEY = "photoBytes";
@@ -43,6 +58,14 @@ public class CreateCarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_car);
+
+        // Vamos buscar o id do contacto ao intent
+        this.userId = getIntent().getLongExtra(USER_ID, 0);
+
+        if(this.userId < 1) {
+            finish();
+            return;
+        }
 
         // Se a instance state não é null, terá alguma coisa lá guardada
         if(savedInstanceState != null) {
@@ -87,17 +110,30 @@ public class CreateCarActivity extends AppCompatActivity {
     }
 
     public void takePhoto(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        // Para verificar que de facto existe uma aplicação que dê conta do nosso pedido
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            // Se sim, lançamos o Intent
-            startActivityForResult(intent, PHOTO_REQUEST_CODE);
-        }
-        else {
-            // Se não existir, podemos mostrar uma mensagem de erro ao utilizador
-            // TODO error
-        }
+        final String takePhoto = getString(R.string.takePhoto);
+        final String selectPhoto = getString(R.string.selectPhoto);
+        final String cancel = getString(R.string.cancel);
+
+        final CharSequence[] items = { takePhoto, selectPhoto, cancel };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.addPhotoTitle));
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (items[which].equals(takePhoto)){
+                    photoIntent();
+
+                } else if (items[which].equals(selectPhoto)){
+                    galleryIntent();
+
+                } else if (items[which].equals(cancel)){
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
     public void createCar(View view) {
@@ -108,8 +144,9 @@ public class CreateCarActivity extends AppCompatActivity {
         if(!brand.isEmpty() && !model.isEmpty() && !fuel.isEmpty() && !seats.isEmpty()) {
             byte[] photoBytes = getBytesFromBitmap(carPhotoBitmap);
 
+
             // Mesmo que não exista foto, não há problema em guardar null no campo dos bytes! Tratamos o caso de ser null quando utilizarmos a foto
-            BoleiasDatabase.getInstance(this).vehicleDao().insert(new Vehicle(0, brand, model, fuel, Integer.parseInt(seats), photoBytes));
+            BoleiasDatabase.getInstance(this).vehicleDao().insert(new Vehicle(0,this.userId,brand, model, fuel, Integer.parseInt(seats), photoBytes));
             finish();
         }
         else {
@@ -134,8 +171,9 @@ public class CreateCarActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    public static void start(Context context) {
+    public static void start(Context context, long userId) {
         Intent starter = new Intent(context, CreateCarActivity.class);
+        starter.putExtra(USER_ID, userId);
         context.startActivity(starter);
     }
 
@@ -150,6 +188,41 @@ public class CreateCarActivity extends AppCompatActivity {
             this.carPhoto.setImageBitmap(thumbnail);
             // E podemos guardar o Bitmap para o caso de a Activity ser destruida (ver onSaveInstanceState)
             this.carPhotoBitmap = thumbnail;
+        } else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+
+            Bitmap thumbnail = null;
+            Uri uri = data.getData();
+
+            //Set image to image view
+            this.carPhoto.setImageURI(uri);
+
+            //Convert uri into bitmap
+            if (thumbnail == null){
+                try {
+                    thumbnail = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    this.carPhotoBitmap = thumbnail;
+                    if (thumbnail != null){
+                        return;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case PERMISSION_CODE: {
+                if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //Permission was granted
+                    picImageFromGallery();
+                } else {
+                    //Permission was denied
+                    Toast.makeText(this, "Permission denied !", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
@@ -166,4 +239,45 @@ public class CreateCarActivity extends AppCompatActivity {
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }
+
+    private void picImageFromGallery(){
+        //Intent to pick image from gallary
+        Intent i = new Intent(Intent.ACTION_PICK);
+        i.setType("image/*");
+        startActivityForResult(i, IMAGE_PICK_CODE);
+    }
+
+    private void galleryIntent() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE )
+                    == PackageManager.PERMISSION_DENIED){
+                String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permissions, PERMISSION_CODE);
+            } else {
+                picImageFromGallery();
+            }
+        } else {
+
+            picImageFromGallery();
+        }
+    }
+
+    private void photoIntent()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Para verificar que de facto existe uma aplicação que dê conta do nosso pedido
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Se sim, lançamos o Intent
+            startActivityForResult(intent, PHOTO_REQUEST_CODE);
+        }
+        else {
+            // Se não existir, podemos mostrar uma mensagem de erro ao utilizador
+            // TODO error
+        }
+    }
+
+
 }
+
+

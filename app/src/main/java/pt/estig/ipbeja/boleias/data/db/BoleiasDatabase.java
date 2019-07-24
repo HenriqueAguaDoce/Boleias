@@ -13,7 +13,7 @@ import pt.estig.ipbeja.boleias.data.dao.VehicleDao;
 import pt.estig.ipbeja.boleias.data.entity.User;
 import pt.estig.ipbeja.boleias.data.entity.Vehicle;
 
-@Database(entities = {Vehicle.class}, version = 3, exportSchema = false)
+@Database(entities = {User.class, Vehicle.class}, version = 4, exportSchema = false)
 public abstract class BoleiasDatabase extends RoomDatabase {
 
     private static BoleiasDatabase instance;
@@ -24,27 +24,27 @@ public abstract class BoleiasDatabase extends RoomDatabase {
 
         if (instance == null){
             instance = Room.databaseBuilder(context, BoleiasDatabase.class, "boleias_db")
-                    .addMigrations(MIGRATION_1_2)
+//                    .addMigrations(MIGRATION_1_2)
                     .allowMainThreadQueries()
-                    //.fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration()
                     .build();
         }
         return instance;
     }
 
-    //public abstract UserDao userDao();
+    public abstract UserDao userDao();
     public abstract VehicleDao vehicleDao();
 
 
     // ------------------------- MIGRATIONS ------------------------- //
 
-    private static final Migration MIGRATION_1_2 = new Migration(2,3) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-
-            database.execSQL("ALTER TABLE contacts ADD photo BLOB default NULL;");
-
-        }
-    };
+//    private static final Migration MIGRATION_1_2 = new Migration(3,4) {
+//        @Override
+//        public void migrate(@NonNull SupportSQLiteDatabase database) {
+//
+//            database.execSQL("ALTER TABLE users ADD photo BLOB default NULL;");
+//
+//        }
+//    };
 
 }

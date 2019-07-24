@@ -64,14 +64,12 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtNomeUt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/name"
-        android:text="Henrique Agua-Doce"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,10 +82,9 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/username"
-        android:text="henriquead"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/txtNomeUt" />
 
     <TextView
         android:id="@+id/textView4"
@@ -132,7 +129,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
-        android:text="24"
+        android:hint="Introduza a sua idade"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView3"
@@ -157,7 +154,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
-        android:text="Masculino"
+        android:hint="Diga qual o seu genero"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView5"
@@ -225,10 +222,10 @@
             android:background="#F2F2F2">
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/txtUserDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+                android:hint="Digite uma pequena apresentacao sobre si" />
 
         </FrameLayout>
 

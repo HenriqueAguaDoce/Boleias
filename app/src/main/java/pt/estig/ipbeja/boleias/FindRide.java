@@ -100,7 +100,8 @@ public class FindRide extends AppCompatActivity implements BottomNavigationView.
                 PreferenceManager.getDefaultSharedPreferences(this).edit()
                         .putBoolean("checkBoxKeepIn", false).commit();
                 finish();
-                LoginActivity.start(this);
+                //TODO
+                //LoginActivity.start(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -131,7 +132,8 @@ public class FindRide extends AppCompatActivity implements BottomNavigationView.
                 return true;
             case R.id.profileSettings:
                 Toast.makeText(this, "Profile Settings...", Toast.LENGTH_SHORT).show();
-                MainActivity.start(this);
+                //TODO
+                //MainActivity.start(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);

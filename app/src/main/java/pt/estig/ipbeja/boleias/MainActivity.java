@@ -38,27 +38,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.estig.ipbeja.boleias.data.db.BoleiasDatabase;
+import pt.estig.ipbeja.boleias.data.entity.User;
 import pt.estig.ipbeja.boleias.data.entity.Vehicle;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    //views
     private BottomNavigationView bottomNavigationView;
     private CarAdapter carAdapter;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerView carCompleteList;
     private LinearLayout layout_img;
+
+    //Request codes
     private static final int PHOTO_REQUEST_CODE = 123;
     private static final String PHOTO_BITMAP_KEY = "photoBytes";
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
+    public static final String USER_EMAIL = "userEmail";
+
+    // Global variables
+    private String userEmail;
     private Bitmap userPhotoBitmap = null;
     private ImageView userPhoto;
     private Bitmap thumbnail;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userEmail = getIntent().getStringExtra(USER_EMAIL);
 
         // Se a instance state não é null, terá alguma coisa lá guardada
         if(savedInstanceState != null) {
@@ -66,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             this.userPhotoBitmap = savedInstanceState.getParcelable(PHOTO_BITMAP_KEY);
         }
 
+        // Colocado um listener na imagem, para quando selecionada o utilizador possa escolher uma foto
         userPhoto = findViewById(R.id.profImage);
         userPhoto.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -84,8 +96,52 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         carCompleteList = findViewById(R.id.carsListRecyclerView);
         carAdapter = new CarAdapter();
         linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
         carCompleteList.setAdapter(carAdapter);
         carCompleteList.setLayoutManager(linearLayoutManager);
+
+        //Set info from user on canvas
+        this.getInfoFromUser();
+    }
+
+
+    /**/
+    private void getInfoFromUser(){
+
+        user = BoleiasDatabase.getInstance(this).userDao().getContact(userEmail);
+        TextView nome = findViewById(R.id.txtNomeUt);
+        nome.setText(user.getName());
+
+        TextView email = findViewById(R.id.txtEmail);
+        email.setText(user.getEmail());
+
+        TextView username = findViewById(R.id.txtUsername);
+        username.setText(user.getUserName());
+
+        TextView age = findViewById(R.id.txtAge);
+        if (user.getAge() != 0)
+            age.setText(Integer.toString(user.getAge()));
+
+        TextView gender = findViewById(R.id.txtGender);
+        gender.setText(user.getGender());
+
+        TextView description = findViewById(R.id.txtUserDescription);
+        description.setText(user.getDesciption());
+
+        if(user.getPhoto() != null && user.getPhoto().length != 0) {
+            userPhoto.setImageBitmap(bitmapFromBytes(user.getPhoto()));
+        }
+
+    }
+
+    /**
+     * Transforma a imagem de byte[] em bitmap
+     * @param photoBytes recebe os bytes da imagem
+     */
+    private Bitmap bitmapFromBytes(byte[] photoBytes) {
+        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(photoBytes);
+        Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);
+        return bitmap;
     }
 
     @Override
@@ -114,30 +170,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public static void start(Context context) {
+    public static void start(Context context, String userEmail) {
         Intent starter = new Intent(context, MainActivity.class);
+        starter.putExtra(USER_EMAIL, userEmail);
         context.startActivity(starter);
-    }
-
-    public void signOut(View view){
-        FirebaseAuth.getInstance().signOut();
-        LoginActivity.start(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        List<Vehicle> vehicles = BoleiasDatabase.getInstance(this).vehicleDao().getAllVehicles();
+        List<Vehicle> vehicles = BoleiasDatabase.getInstance(this).vehicleDao().getVehicle(user.getId());
 
         carAdapter.setData(vehicles);
 
-        if(userPhotoBitmap != null) {
-            userPhoto.setImageBitmap(userPhotoBitmap);
+
+        if(userPhotoBitmap != null || user.getPhoto() != null) {
+            userPhoto.setImageBitmap(bitmapFromBytes(user.getPhoto()));
             userPhoto.setVisibility(View.VISIBLE);
             layout_img.setVisibility(View.GONE);
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+
+        List<Vehicle> vehicles = BoleiasDatabase.getInstance(this).vehicleDao().getAllVehicles();
+
+        carAdapter.setData(vehicles);
+
+        super.onResume();
     }
 
     @Override
@@ -154,17 +217,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.profileSettings:
                 Toast.makeText(this, "Profile Settings...", Toast.LENGTH_SHORT).show();
-                MainActivity.start(this);
+                MainActivity.start(this, this.userEmail);
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
 
         }
-    }
-
-    public void addNewCar_onClick(View view) {
-        CreateCarActivity.start(this);
-
     }
 
     public void addNewProfImg_onClick(View view) {
@@ -256,29 +314,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             this.thumbnail = (Bitmap) extras.get("data");
             // Set bitmap on ImageView
             this.userPhoto.setImageBitmap(this.thumbnail);
+
             // Save bitmap in case the activity gets destroid (see onSaveInstanceState)
             this.userPhotoBitmap = this.thumbnail;
+
+            byte[] photoBytes = getBytesFromBitmap(userPhotoBitmap);
+            //this.user.setPhoto(photoBytes);
+            BoleiasDatabase.getInstance(this).userDao().updatePhoto(photoBytes, user.getId());
+            Toast.makeText(this, "photo uploaded", Toast.LENGTH_SHORT).show();
+
         } else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
             Uri uri = data.getData();
 
             //Set image to image view
             this.userPhoto.setImageURI(uri);
             layout_img.setVisibility(View.GONE);
-
-            //TODO
-
-            //Convert uri into bitmap
-//            if (thumbnail == null){
-//                try {
-//                    thumbnail = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-//                    this.userPhotoBitmap = thumbnail;
-//                    if (thumbnail != null){
-//                        return;
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
 
         }
     }
@@ -336,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     public void createCars(View view) {
-        CreateCarActivity.start(this);
+        CreateCarActivity.start(this, user.getId());
     }
 
 
@@ -375,7 +425,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         @Override
         public void onClick(View v) {
             showDeleteContactDialog(vehicle);
-            Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
         }
 
 

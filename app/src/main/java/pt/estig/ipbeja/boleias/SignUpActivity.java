@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import pt.estig.ipbeja.boleias.data.db.BoleiasDatabase;
 import pt.estig.ipbeja.boleias.data.entity.User;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -60,7 +62,8 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(0, username.getText().toString(), email,0, null, null, null, null);
+                            User user = new User(0, username.getText().toString(), email,0, "", "", "", null);
+                            BoleiasDatabase.getInstance(SignUpActivity.this).userDao().insert(user);
                             FirebaseFirestore.getInstance()
                                     .collection("users")
                                     .add(user);
